@@ -1,0 +1,12 @@
+{
+  "name": "SellClip AI",
+  "short_name": "SellClip",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0F766E",
+  "description": "SellClip AI Flutter client",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
+

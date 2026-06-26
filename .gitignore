@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+*.iml
+
+target/
+build/
+.gradle/
+backend/.mvn/apache-maven-*/
+
+.env
+*.log
+
+frontend/**/.dart_tool/
+frontend/**/.flutter-plugins
+frontend/**/.flutter-plugins-dependencies
+frontend/**/.packages
