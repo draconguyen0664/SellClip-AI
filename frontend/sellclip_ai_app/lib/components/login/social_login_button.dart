@@ -22,7 +22,7 @@ class SocialLoginButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         splashColor: Colors.white.withValues(alpha: 0.12),
         child: Container(
-          height: 58,
+          height: 52,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             border: Border.all(color: Colors.white.withValues(alpha: 0.17)),
@@ -30,7 +30,7 @@ class SocialLoginButton extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(left: 24, child: child),
+              Positioned(left: 22, child: child),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 58),
                 child: FittedBox(
@@ -40,7 +40,7 @@ class SocialLoginButton extends StatelessWidget {
                     maxLines: 1,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0,
                     ),
@@ -61,8 +61,8 @@ class GoogleMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      width: 30,
-      height: 30,
+      width: 26,
+      height: 26,
       child: CustomPaint(painter: _GoogleMarkPainter()),
     );
   }

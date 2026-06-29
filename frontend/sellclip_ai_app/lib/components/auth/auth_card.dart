@@ -11,14 +11,14 @@ class AuthCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.fromLTRB(
-        compact ? 18 : 24,
-        compact ? 22 : 28,
-        compact ? 18 : 24,
-        compact ? 22 : 26,
+        compact ? 16 : 20,
+        compact ? 18 : 22,
+        compact ? 16 : 20,
+        compact ? 18 : 22,
       ),
       decoration: BoxDecoration(
         color: const Color(0xFF080A20).withValues(alpha: 0.78),
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: const Color(0xFF9B4DFF).withValues(alpha: 0.5),
         ),

@@ -42,19 +42,19 @@ class SellClipBottomNavigation extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        margin: const EdgeInsets.fromLTRB(18, 8, 18, 12),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(28),
+          color: const Color(0xFF071024).withValues(alpha: 0.92),
+          borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outlineVariant,
+            color: Colors.white.withValues(alpha: 0.12),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
+              color: const Color(0xFF005DFF).withValues(alpha: 0.12),
+              blurRadius: 28,
+              offset: const Offset(0, -6),
             ),
           ],
         ),
@@ -88,17 +88,11 @@ class _NavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final foregroundColor = item.isPrimary
-        ? colorScheme.onPrimary
+        ? Colors.white
         : isSelected
-            ? colorScheme.primary
-            : colorScheme.onSurfaceVariant;
-    final backgroundColor = item.isPrimary
-        ? colorScheme.primary
-        : isSelected
-            ? colorScheme.primaryContainer.withValues(alpha: 0.55)
-            : Colors.transparent;
+            ? Colors.white
+            : Colors.white.withValues(alpha: 0.56);
 
     return Tooltip(
       message: item.label,
@@ -108,18 +102,17 @@ class _NavigationButton extends StatelessWidget {
           foregroundColor: foregroundColor,
           padding: EdgeInsets.symmetric(
             horizontal: item.isPrimary ? 8 : 4,
-            vertical: 6,
+            vertical: 4,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(item.isPrimary ? 22 : 18),
+            borderRadius: BorderRadius.circular(item.isPrimary ? 28 : 16),
           ),
-          backgroundColor: backgroundColor,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(item.icon, size: item.isPrimary ? 30 : 24),
-            const SizedBox(height: 3),
+            _NavIcon(item: item, isSelected: isSelected),
+            SizedBox(height: item.isPrimary ? 5 : 6),
             Text(
               item.label,
               maxLines: 1,
@@ -134,6 +127,59 @@ class _NavigationButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _NavIcon extends StatelessWidget {
+  const _NavIcon({required this.item, required this.isSelected});
+
+  final _NavigationItem item;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    if (item.isPrimary) {
+      return Container(
+        height: 58,
+        width: 58,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF7D2DFF), Color(0xFF008DFF)],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF006DFF).withValues(alpha: 0.42),
+              blurRadius: 22,
+            ),
+          ],
+        ),
+        child: const Icon(Icons.add, color: Colors.white, size: 42),
+      );
+    }
+
+    final icon = Icon(
+      item.icon,
+      color: Colors.white,
+      size: 28,
+    );
+
+    if (!isSelected) {
+      return Icon(
+        item.icon,
+        color: Colors.white.withValues(alpha: 0.56),
+        size: 28,
+      );
+    }
+
+    return ShaderMask(
+      shaderCallback: (bounds) => const LinearGradient(
+        colors: [Color(0xFF9B32FF), Color(0xFF168DFF)],
+      ).createShader(bounds),
+      child: icon,
     );
   }
 }

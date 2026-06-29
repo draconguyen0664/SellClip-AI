@@ -97,19 +97,19 @@ class _LoginLayoutMetrics {
   final double height;
 
   late final bool tiny = height < 700;
-  late final double sidePadding = (width * 0.075).clamp(18.0, 38.0);
+  late final double sidePadding = (width * 0.06).clamp(14.0, 28.0);
   late final double topPadding = (height * (tiny ? 0.018 : 0.035)).clamp(
     10.0,
     36.0,
   );
   late final double bottomPadding = (height * 0.038).clamp(18.0, 44.0);
-  late final double logoWidth = (width * (tiny ? 0.48 : 0.54)).clamp(
-    168.0,
-    250.0,
+  late final double logoWidth = (width * (tiny ? 0.40 : 0.44)).clamp(
+    132.0,
+    190.0,
   );
-  late final double subtitleSize = (width * (tiny ? 0.035 : 0.038)).clamp(
-    12.5,
-    17.0,
+  late final double subtitleSize = (width * (tiny ? 0.031 : 0.033)).clamp(
+    11.5,
+    14.0,
   );
   late final double headerCardGap = (height * (tiny ? 0.018 : 0.034)).clamp(
     12.0,

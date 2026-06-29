@@ -112,19 +112,19 @@ class _LoginFormCardState extends State<LoginFormCard> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 330;
-        final cardPadding = compact ? 18.0 : 24.0;
+        final cardPadding = compact ? 16.0 : 20.0;
 
         return Container(
           width: double.infinity,
           padding: EdgeInsets.fromLTRB(
             cardPadding,
-            compact ? 22 : 28,
+            compact ? 18 : 22,
             cardPadding,
-            compact ? 22 : 26,
+            compact ? 18 : 22,
           ),
           decoration: BoxDecoration(
             color: const Color(0xFF080A20).withValues(alpha: 0.78),
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(22),
             border: Border.all(
               color: const Color(0xFF9B4DFF).withValues(alpha: 0.5),
             ),
@@ -169,7 +169,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
                     color: Colors.white.withValues(alpha: 0.72),
-                    size: 28,
+                    size: 24,
                   ),
                 ),
               ),
@@ -230,7 +230,7 @@ class _RememberAndForgotRow extends StatelessWidget {
                     value: rememberMe,
                     onChanged: onRememberChanged,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 8),
                   const Expanded(
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
@@ -240,7 +240,7 @@ class _RememberAndForgotRow extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -267,7 +267,7 @@ class _RememberAndForgotRow extends StatelessWidget {
                       maxLines: 1,
                       style: TextStyle(
                         color: Color(0xFF1996FF),
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -303,8 +303,8 @@ class _RememberCheckbox extends StatelessWidget {
       borderRadius: BorderRadius.circular(7),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
-        width: 26,
-        height: 26,
+        width: 24,
+        height: 24,
         decoration: BoxDecoration(
           color: value
               ? const Color(0xFF9C38FF).withValues(alpha: 0.14)
@@ -313,7 +313,7 @@ class _RememberCheckbox extends StatelessWidget {
           border: Border.all(color: const Color(0xFF9C38FF), width: 1.5),
         ),
         child: value
-            ? const Icon(Icons.check, color: Color(0xFFA738FF), size: 21)
+            ? const Icon(Icons.check, color: Color(0xFFA738FF), size: 19)
             : null,
       ),
     );
@@ -351,7 +351,7 @@ class _LoginButton extends StatelessWidget {
           onTap: loading ? null : onPressed,
           borderRadius: BorderRadius.circular(13),
           child: SizedBox(
-            height: 62,
+            height: 52,
             child: Center(
               child: loading
                   ? const SizedBox(
@@ -366,7 +366,7 @@ class _LoginButton extends StatelessWidget {
                       'Đăng nhập',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -392,7 +392,7 @@ class _DividerText extends StatelessWidget {
             'hoặc',
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.50),
-              fontSize: 18,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -418,7 +418,7 @@ class _RegisterPrompt extends StatelessWidget {
           'Chưa có tài khoản? ',
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.55),
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -428,7 +428,7 @@ class _RegisterPrompt extends StatelessWidget {
             'Đăng ký',
             style: TextStyle(
               color: Color(0xFFB33CFF),
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
           ),

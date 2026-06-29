@@ -21,7 +21,7 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 62,
+      height: 54,
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.045),
         borderRadius: BorderRadius.circular(14),
@@ -29,9 +29,9 @@ class LoginTextField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const SizedBox(width: 18),
-          Icon(icon, color: Colors.white.withValues(alpha: 0.72), size: 28),
           const SizedBox(width: 16),
+          Icon(icon, color: Colors.white.withValues(alpha: 0.72), size: 24),
+          const SizedBox(width: 14),
           Expanded(
             child: TextField(
               controller: controller,
@@ -40,7 +40,7 @@ class LoginTextField extends StatelessWidget {
               cursorColor: const Color(0xFF2E94FF),
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
               decoration: InputDecoration(
@@ -49,7 +49,7 @@ class LoginTextField extends StatelessWidget {
                 hintText: hintText,
                 hintStyle: TextStyle(
                   color: Colors.white.withValues(alpha: 0.42),
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -58,7 +58,7 @@ class LoginTextField extends StatelessWidget {
           if (trailing != null) ...[
             const SizedBox(width: 10),
             trailing!,
-            const SizedBox(width: 14),
+            const SizedBox(width: 12),
           ] else
             const SizedBox(width: 18),
         ],

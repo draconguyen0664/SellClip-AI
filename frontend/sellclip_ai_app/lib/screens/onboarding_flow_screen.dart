@@ -558,55 +558,50 @@ class _OptionTile extends StatelessWidget {
                   ]
                 : null,
           ),
-          child: Stack(
-            children: [
-              Center(
-                child: option.tall
-                    ? Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _GradientIcon(option.icon, size: 74),
-                          const SizedBox(height: 22),
-                          Text(
+          child: Center(
+            child: option.tall
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _GradientIcon(option.icon, size: 62),
+                      const SizedBox(height: 16),
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
                             option.label,
+                            maxLines: 3,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 19, height: 1.2),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          _GradientIcon(option.icon),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                option.label,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    height: 1.15),
-                              ),
+                              color: Colors.white,
+                              fontSize: 18,
+                              height: 1.16,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-              ),
-              if (selected)
-                const Positioned(
-                  top: 10,
-                  right: 10,
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Color(0xFF116DFF),
-                    child: Icon(Icons.check, color: Colors.white, size: 24),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      _GradientIcon(option.icon),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            option.label,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                height: 1.15),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-            ],
           ),
         ),
       ),
@@ -664,25 +659,52 @@ class _VoicePreview extends StatelessWidget {
           runSpacing: 10,
           children: voices.map((voice) {
             final active = voiceType == voice;
-            return ChoiceChip(
-              selected: active,
-              onSelected: (_) => onChanged(voice),
-              label: Text(voice),
-              avatar: Icon(
-                voice == 'Nữ trẻ'
-                    ? Icons.face_3_outlined
-                    : voice == 'Nam ấm'
-                        ? Icons.face_outlined
-                        : Icons.favorite_outline,
-                color: active ? Colors.white : const Color(0xFF8F37FF),
-              ),
-              selectedColor: const Color(0xFF116DFF),
-              backgroundColor: Colors.white.withValues(alpha: 0.04),
-              labelStyle: const TextStyle(color: Colors.white),
-              side: BorderSide(
+            final icon = voice == 'Nữ trẻ'
+                ? Icons.face_3_outlined
+                : voice == 'Nam ấm'
+                    ? Icons.face_outlined
+                    : Icons.favorite_outline;
+            return InkWell(
+              onTap: () => onChanged(voice),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                height: 46,
+                constraints: const BoxConstraints(minWidth: 96),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
                   color: active
-                      ? const Color(0xFF168DFF)
-                      : Colors.white.withValues(alpha: 0.16)),
+                      ? const Color(0xFF116DFF).withValues(alpha: 0.88)
+                      : Colors.white.withValues(alpha: 0.04),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: active
+                        ? const Color(0xFF168DFF)
+                        : Colors.white.withValues(alpha: 0.18),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      icon,
+                      size: 18,
+                      color: active ? Colors.white : const Color(0xFFB064FF),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      voice,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: active
+                            ? Colors.white
+                            : Colors.white.withValues(alpha: 0.82),
+                        fontSize: 14,
+                        fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }).toList(),
         ),

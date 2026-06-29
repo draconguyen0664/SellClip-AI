@@ -14,6 +14,18 @@ class SellClipApp extends StatelessWidget {
     return MaterialApp(
       title: 'SellClip AI',
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        final mediaQuery = MediaQuery.of(context);
+        return MediaQuery(
+          data: mediaQuery.copyWith(
+            textScaler: mediaQuery.textScaler.clamp(
+              minScaleFactor: 0.9,
+              maxScaleFactor: 1.0,
+            ),
+          ),
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0F766E)),
         fontFamily: 'Inter',
