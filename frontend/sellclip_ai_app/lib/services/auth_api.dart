@@ -7,7 +7,7 @@ class AuthApi {
 
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://10.0.2.2:8080',
+    defaultValue: 'http://10.0.2.2:8081',
   );
 
   final http.Client _client;
@@ -34,7 +34,7 @@ class AuthApi {
     required bool rememberMe,
   }) {
     return _post('/api/auth/login', {
-      'email': email,
+      'email': email.trim(),
       'password': password,
       'rememberMe': rememberMe,
     });
@@ -48,7 +48,7 @@ class AuthApi {
     String? accessToken,
   }) {
     return _post('/api/auth/google', {
-      'email': email,
+      'email': email.trim(),
       'displayName': displayName,
       'googleId': googleId ?? '',
       'idToken': idToken ?? '',
@@ -60,11 +60,14 @@ class AuthApi {
     required String email,
     required String code,
   }) {
-    return _post('/api/auth/verify-email', {'email': email, 'code': code});
+    return _post('/api/auth/verify-email', {
+      'email': email.trim(),
+      'code': code,
+    });
   }
 
   Future<AuthApiResponse> resendVerification({required String email}) {
-    return _post('/api/auth/resend-verification', {'email': email});
+    return _post('/api/auth/resend-verification', {'email': email.trim()});
   }
 
   Future<AuthApiResponse> forgotPassword({
@@ -72,7 +75,7 @@ class AuthApi {
     required String deliveryMethod,
   }) {
     return _post('/api/auth/forgot-password', {
-      'email': email,
+      'email': email.trim(),
       'deliveryMethod': deliveryMethod,
     });
   }
@@ -84,7 +87,7 @@ class AuthApi {
     required String confirmPassword,
   }) {
     return _post('/api/auth/reset-password', {
-      'email': email,
+      'email': email.trim(),
       'code': code,
       'newPassword': newPassword,
       'confirmPassword': confirmPassword,
@@ -116,12 +119,15 @@ class AuthApi {
   Future<AuthApiResponse> _post(String path, Map<String, Object> body) async {
     final uri = Uri.parse('$baseUrl$path');
     try {
-      final response = await _client.post(
-        uri,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
-      );
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      final response = await _client
+          .post(
+            uri,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(body),
+          )
+          .timeout(const Duration(seconds: 3));
+      final json =
+          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       return AuthApiResponse.fromJson(json, response.statusCode);
     } catch (_) {
       return const AuthApiResponse(

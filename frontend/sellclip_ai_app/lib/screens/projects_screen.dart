@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sellclip_ai_app/components/projects/project_cards.dart';
+import 'package:sellclip_ai_app/screens/create_project_screen.dart';
 
 class ProjectsScreenBody extends StatelessWidget {
   const ProjectsScreenBody({super.key});
@@ -76,7 +77,7 @@ class _ProjectsHeader extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         const _CreateProjectButton(),
       ],
     );
@@ -123,23 +124,37 @@ class _CreateProjectButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(13),
-          onTap: () {},
+          onTap: () async {
+            final result = await Navigator.of(context).push(
+              MaterialPageRoute<Object?>(
+                builder: (_) => const CreateProjectScreen(),
+              ),
+            );
+            if (result != null && context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Tạo project thành công')),
+              );
+            }
+          },
           child: Container(
-            height: 48,
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            height: 46,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.add_circle_outline_rounded,
-                    color: Colors.white, size: 24),
-                SizedBox(width: 8),
+                Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: Colors.white,
+                  size: 22,
+                ),
+                SizedBox(width: 7),
                 Text(
                   'Tạo project',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

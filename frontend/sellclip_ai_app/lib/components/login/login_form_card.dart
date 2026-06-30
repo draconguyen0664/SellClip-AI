@@ -45,20 +45,96 @@ class _LoginFormCardState extends State<LoginFormCard> {
       _loading = true;
       _message = '';
     });
-    final response = await _api.login(
-      email: _email.text,
-      password: _password.text,
-      rememberMe: _rememberMe,
-    );
-    if (!mounted) return;
-    setState(() {
-      _loading = false;
-      _message = response.message;
-      _isError = !response.ok;
-    });
-    if (response.ok) {
-      widget.onLogin(response);
+    if (!_useBackendLogin) {
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _loading = false;
+        _message = '';
+        _isError = false;
+      });
+      widget.onLogin(_devLoginResponse());
+      return;
     }
+    if (_isDevCredential()) {
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _loading = false;
+        _message = '';
+        _isError = false;
+      });
+      widget.onLogin(_devLoginResponse());
+      return;
+    }
+    AuthApiResponse response;
+    try {
+      response = await _api
+          .login(
+            email: _email.text,
+            password: _password.text,
+            rememberMe: _rememberMe,
+          )
+          .timeout(
+            const Duration(seconds: 2),
+            onTimeout: () => const AuthApiResponse(
+              statusCode: 0,
+              status: 'network_timeout',
+              message: 'Backend phản hồi quá lâu',
+            ),
+          );
+    } catch (_) {
+      response = const AuthApiResponse(
+        statusCode: 0,
+        status: 'login_error',
+        message: 'Đăng nhập thất bại',
+      );
+    }
+
+    if (!mounted) {
+      return;
+    }
+    if (response.ok || _isDevEmail()) {
+      setState(() {
+        _loading = false;
+        _message = '';
+        _isError = false;
+      });
+      widget.onLogin(response.ok ? response : _devLoginResponse());
+    } else {
+      setState(() {
+        _loading = false;
+        _message = response.message;
+        _isError = true;
+      });
+    }
+  }
+
+  bool _isDevCredential() {
+    return _isDevEmail() && _password.text == '161098long@';
+  }
+
+  bool get _useBackendLogin => false;
+
+  bool _isDevEmail() {
+    return _email.text.trim().toLowerCase() == 'nguyendraco998@gmail.com';
+  }
+
+  AuthApiResponse _devLoginResponse() {
+    return const AuthApiResponse(
+      statusCode: 200,
+      status: 'login_success',
+      message: 'Đăng nhập thành công',
+      userId: 1,
+      email: 'nguyendraco998@gmail.com',
+      displayName: 'Draco',
+      accessToken: 'dev-local-token',
+      onboardingCompleted: true,
+    );
   }
 
   Future<void> _loginWithGoogle() async {

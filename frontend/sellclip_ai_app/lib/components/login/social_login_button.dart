@@ -60,52 +60,46 @@ class GoogleMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 26,
-      height: 26,
-      child: CustomPaint(painter: _GoogleMarkPainter()),
+    return CustomPaint(
+      size: const Size.square(24),
+      painter: _GoogleMarkPainter(),
     );
   }
 }
 
 class _GoogleMarkPainter extends CustomPainter {
-  const _GoogleMarkPainter();
-
   @override
   void paint(Canvas canvas, Size size) {
-    final stroke = size.width * 0.16;
-    final rect = Rect.fromLTWH(
-        stroke, stroke, size.width - stroke * 2, size.height - stroke * 2);
+    final stroke = size.width * 0.18;
+    final oval = Offset.zero & size;
+    final arcOval = oval.deflate(stroke / 2);
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
-
-    paint.color = const Color(0xFF4285F4);
-    canvas.drawArc(rect, -0.05, 1.48, false, paint);
-
-    paint.color = const Color(0xFF34A853);
-    canvas.drawArc(rect, 1.43, 1.15, false, paint);
-
-    paint.color = const Color(0xFFFBBC05);
-    canvas.drawArc(rect, 2.58, 1.04, false, paint);
+      ..strokeCap = StrokeCap.square;
 
     paint.color = const Color(0xFFEA4335);
-    canvas.drawArc(rect, 3.62, 1.45, false, paint);
+    canvas.drawArc(arcOval, -2.88, 1.38, false, paint);
 
-    paint
+    paint.color = const Color(0xFFFBBC05);
+    canvas.drawArc(arcOval, 2.12, 0.96, false, paint);
+
+    paint.color = const Color(0xFF34A853);
+    canvas.drawArc(arcOval, 1.05, 1.18, false, paint);
+
+    paint.color = const Color(0xFF4285F4);
+    canvas.drawArc(arcOval, -0.15, 1.28, false, paint);
+
+    final barPaint = Paint()
       ..color = const Color(0xFF4285F4)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
       ..strokeCap = StrokeCap.square;
-    final centerY = size.height * 0.50;
+    final y = size.height * 0.50;
     canvas.drawLine(
-      Offset(size.width * 0.52, centerY),
-      Offset(size.width * 0.88, centerY),
-      paint,
-    );
-    canvas.drawLine(
-      Offset(size.width * 0.88, centerY),
-      Offset(size.width * 0.88, size.height * 0.40),
-      paint,
+      Offset(size.width * 0.50, y),
+      Offset(size.width * 0.88, y),
+      barPaint,
     );
   }
 

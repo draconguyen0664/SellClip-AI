@@ -112,18 +112,18 @@ class _NavigationButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _NavIcon(item: item, isSelected: isSelected),
-            SizedBox(height: item.isPrimary ? 5 : 6),
-            Text(
-              item.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: item.isPrimary ? 12 : 11,
-                fontWeight: item.isPrimary || isSelected
-                    ? FontWeight.w700
-                    : FontWeight.w500,
+            if (!item.isPrimary) ...[
+              const SizedBox(height: 6),
+              Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
