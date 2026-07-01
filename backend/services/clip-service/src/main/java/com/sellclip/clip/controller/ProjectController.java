@@ -28,7 +28,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<ProjectResponse> list(@RequestParam Long ownerId) {
+    public List<ProjectResponse> list(@RequestParam("ownerId") Long ownerId) {
         return projectService.listByOwner(ownerId);
     }
 

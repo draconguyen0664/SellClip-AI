@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sellclip_ai_app/components/home/home_background.dart';
 import 'package:sellclip_ai_app/components/projects/project_cards.dart';
+import 'package:sellclip_ai_app/screens/brand_kit_screen.dart';
+import 'package:sellclip_ai_app/services/brand_kit_api.dart';
 import 'package:sellclip_ai_app/services/project_api.dart';
 
 class CreateProjectScreen extends StatefulWidget {
@@ -15,6 +17,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   final _name = TextEditingController();
   ProjectType _type = ProjectType.imageToVideo;
   AspectRatioOption _ratio = AspectRatioOption.ratio916;
+  BrandKitSummary? _selectedBrandKit;
   String _brandKit = 'SellClip Default';
   String _templateName = 'Không dùng template';
   bool _loading = false;
@@ -68,6 +71,34 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     }
   }
 
+  Future<void> _chooseBrandKit() async {
+    final selected = await Navigator.of(context).push<BrandKitSummary>(
+      MaterialPageRoute(
+        builder: (_) => BrandKitScreen(
+          ownerId: 1,
+          selectedBrandKitName: _brandKit,
+        ),
+      ),
+    );
+    if (!mounted || selected == null) {
+      return;
+    }
+    setState(() {
+      _selectedBrandKit = selected;
+      _brandKit = selected.name;
+      _message = 'Đã áp dụng ${selected.name}';
+      _isError = false;
+    });
+  }
+
+  String get _brandKitSubtitle {
+    final selected = _selectedBrandKit;
+    if (selected == null) {
+      return 'Bộ nhận diện thương hiệu mặc định';
+    }
+    return '${selected.fontCount} fonts • ${selected.assetCount} assets';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,10 +136,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             title: 'Brand Kit',
                             icon: Icons.workspace_premium_outlined,
                             titleText: _brandKit,
-                            subtitle: 'Bộ nhận diện thương hiệu mặc định',
-                            onTap: () => setState(() {
-                              _brandKit = 'SellClip Default';
-                            }),
+                            subtitle: _brandKitSubtitle,
+                            onTap: _chooseBrandKit,
                           ),
                           const SizedBox(height: 12),
                           _PickerSection(
