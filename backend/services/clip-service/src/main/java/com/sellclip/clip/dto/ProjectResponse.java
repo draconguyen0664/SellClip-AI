@@ -15,6 +15,7 @@ public record ProjectResponse(
         String aspectRatioLabel,
         String brandKit,
         String templateName,
+        String folderName,
         ProjectStatus status,
         Instant createdAt,
         Instant updatedAt
@@ -29,6 +30,7 @@ public record ProjectResponse(
                 project.getAspectRatio().getLabel(),
                 project.getBrandKit(),
                 project.getTemplateName(),
+                project.getFolderName(),
                 project.getStatus(),
                 project.getCreatedAt(),
                 project.getUpdatedAt()

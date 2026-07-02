@@ -28,7 +28,7 @@ public class ClipController {
     }
 
     @GetMapping
-    public List<ClipAsset> listByOwner(@RequestParam Long ownerId) {
+    public List<ClipAsset> listByOwner(@RequestParam("ownerId") Long ownerId) {
         return clipService.listByOwner(ownerId);
     }
 
@@ -37,3 +37,4 @@ public class ClipController {
         return clipService.create(request);
     }
 }
+

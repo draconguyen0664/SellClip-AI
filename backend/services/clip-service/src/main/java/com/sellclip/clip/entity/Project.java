@@ -37,6 +37,9 @@ public class Project {
     @Column(nullable = false, length = 120)
     private String templateName;
 
+    @Column(length = 120)
+    private String folderName;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 40)
     private ProjectStatus status = ProjectStatus.DRAFT;
@@ -66,6 +69,36 @@ public class Project {
         this.templateName = templateName;
     }
 
+    public Project duplicate(String duplicatedName) {
+        Project copy = new Project(ownerId, duplicatedName, type, aspectRatio, brandKit, templateName);
+        copy.folderName = folderName;
+        return copy;
+    }
+
+    public void rename(String newName) {
+        name = newName;
+        touch();
+    }
+
+    public void moveToFolder(String folder) {
+        folderName = folder == null || folder.isBlank() ? null : folder.trim();
+        touch();
+    }
+
+    public void archive() {
+        status = ProjectStatus.ARCHIVED;
+        touch();
+    }
+
+    public void delete() {
+        status = ProjectStatus.DELETED;
+        touch();
+    }
+
+    private void touch() {
+        updatedAt = Instant.now();
+    }
+
     public Long getId() {
         return id;
     }
@@ -92,6 +125,10 @@ public class Project {
 
     public String getTemplateName() {
         return templateName;
+    }
+
+    public String getFolderName() {
+        return folderName;
     }
 
     public ProjectStatus getStatus() {
