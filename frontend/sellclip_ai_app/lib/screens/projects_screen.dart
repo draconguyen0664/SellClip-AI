@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sellclip_ai_app/components/projects/project_cards.dart';
 import 'package:sellclip_ai_app/screens/create_project_screen.dart';
+import 'package:sellclip_ai_app/screens/project_detail_screen.dart';
 import 'package:sellclip_ai_app/services/project_api.dart';
 
 class ProjectsScreenBody extends StatefulWidget {
@@ -102,7 +103,7 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
       MaterialPageRoute(builder: (_) => const CreateProjectScreen()),
     );
     if (!mounted || result == null) return;
-    _showSnack('Tao project thanh cong');
+    _showSnack('Tạo project thanh cong');
     await _loadProjects();
   }
 
@@ -121,15 +122,20 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
   }
 
   Future<void> _openProject(ProjectItem item) async {
-    await _runAction(() => _api.openProject(ownerId: 1, projectId: item.id));
+    final changed = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(builder: (_) => ProjectDetailScreen(project: item)),
+    );
+    if (changed == true && mounted) {
+      await _loadProjects();
+    }
   }
 
   Future<void> _renameProject(ProjectItem item) async {
     final name = await _showTextDialog(
-      title: 'Doi ten project',
-      label: 'Ten project',
+      title: 'Đổi tên project',
+      label: 'Tên project',
       initialValue: item.title,
-      actionLabel: 'Luu',
+      actionLabel: 'Lưu',
     );
     if (name == null || name.trim().isEmpty || name.trim() == item.title) return;
     await _runAction(
@@ -147,11 +153,11 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
 
   Future<void> _moveProjectToFolder(ProjectItem item) async {
     final folderName = await _showTextDialog(
-      title: 'Dua vao folder',
+      title: 'Đưa vào folder',
       label: 'Ten folder',
       initialValue: item.folderName ?? '',
-      hintText: 'De trong neu muon bo khoi folder',
-      actionLabel: 'Luu',
+      hintText: 'Để trống nếu muốn bỏ khỏi folder',
+      actionLabel: 'Lưu',
     );
     if (folderName == null) return;
     await _runAction(
@@ -175,16 +181,16 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF09072A),
-        title: const Text('Xoa project?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
+        title: const Text('Xóa project?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
         content: Text(
-          'Project "${item.title}" se bi an khoi danh sach.',
+          'Project "${item.title}" sẽ bị ẩn khỏi danh sách.',
           style: const TextStyle(color: projectMuted),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Huy')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Hủy')),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Xoa', style: TextStyle(color: Color(0xFFFF5656))),
+            child: const Text('Xóa', style: TextStyle(color: Color(0xFFFF5656))),
           ),
         ],
       ),
@@ -245,7 +251,7 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Huy')),
+            TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Hủy')),
             TextButton(onPressed: () => Navigator.pop(dialogContext, controller.text), child: Text(actionLabel)),
           ],
         ),
@@ -268,9 +274,10 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
   String _categoryFromType(String type) {
     return switch (type) {
       'IMAGE_TO_VIDEO' => 'Video Marketing',
-      'RAW_VIDEO_EDITOR' => 'Chinh sua video',
+      'RAW_VIDEO_EDITOR' => 'Chỉnh sửa video',
       'POSTER' => 'Poster',
       'IMAGE_EDITOR' => 'Image Editor',
+      'AI_CONTENT' => 'AI Content',
       _ => 'Video Marketing',
     };
   }
@@ -280,6 +287,7 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
       'RAW_VIDEO_EDITOR' => Icons.movie_creation_outlined,
       'POSTER' => Icons.article_outlined,
       'IMAGE_EDITOR' => Icons.auto_fix_high_rounded,
+      'AI_CONTENT' => Icons.psychology_alt_outlined,
       _ => Icons.water_drop_outlined,
     };
   }
@@ -369,7 +377,7 @@ class _ProjectsScreenBodyState extends State<ProjectsScreenBody> {
                                       style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800),
                                     ),
                                   ),
-                                  TextButton(onPressed: () => setState(() => _selectedFolder = null), child: const Text('Bo loc')),
+                                  TextButton(onPressed: () => setState(() => _selectedFolder = null), child: const Text('Bộ lọc')),
                                 ],
                               ),
                             ),
@@ -454,7 +462,7 @@ class _ProjectsTitleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text(
-      'Du an',
+      'Dự án',
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(color: Colors.white, fontSize: 34, height: 1, fontWeight: FontWeight.w900),
@@ -488,7 +496,7 @@ class _CreateProjectButton extends StatelessWidget {
               children: [
                 Icon(Icons.add_circle_outline_rounded, color: Colors.white, size: 22),
                 SizedBox(width: 7),
-                Text('Tao project', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
+                Text('Tạo project', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700)),
               ],
             ),
           ),
@@ -528,14 +536,14 @@ class _InlineFolderSection extends StatelessWidget {
               const SizedBox(width: 8),
               const Expanded(
                 child: Text(
-                  'Folder da luu',
+                  'Folder đã lưu',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900),
                 ),
               ),
               if (selectedFolder != null)
-                TextButton(onPressed: () => onSelected(null), child: const Text('Tat ca')),
+                TextButton(onPressed: () => onSelected(null), child: const Text('Tất cả')),
             ],
           ),
           const SizedBox(height: 10),
@@ -546,7 +554,7 @@ class _InlineFolderSection extends StatelessWidget {
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Chua co folder nao',
+                    'Chưa có folder nào',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: projectMuted, fontSize: 13, fontWeight: FontWeight.w700),
@@ -560,7 +568,7 @@ class _InlineFolderSection extends StatelessWidget {
               runSpacing: 8,
               children: [
                 _InlineFolderChip(
-                  name: 'Tat ca',
+                  name: 'Tất cả',
                   count: folders.fold<int>(0, (total, folder) => total + folder.projectCount),
                   selected: selectedFolder == null,
                   onTap: () => onSelected(null),

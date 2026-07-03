@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sellclip_ai_app/components/home/home_background.dart';
 import 'package:sellclip_ai_app/components/home/home_cards.dart';
 import 'package:sellclip_ai_app/components/navigation/sellclip_bottom_navigation.dart';
+import 'package:sellclip_ai_app/components/motion/sellclip_motion.dart';
 import 'package:sellclip_ai_app/screens/projects_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,9 +32,32 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: SafeArea(
               bottom: false,
-              child: _currentTab == SellClipTab.projects
-                  ? const ProjectsScreenBody()
-                  : const _HomeTabBody(),
+              child: AnimatedSwitcher(
+                duration: SellClipMotion.normal,
+                reverseDuration: SellClipMotion.fast,
+                switchInCurve: SellClipMotion.entranceCurve,
+                switchOutCurve: SellClipMotion.exitCurve,
+                transitionBuilder: (child, animation) {
+                  final curved = CurvedAnimation(
+                    parent: animation,
+                    curve: SellClipMotion.entranceCurve,
+                    reverseCurve: SellClipMotion.exitCurve,
+                  );
+                  return FadeTransition(
+                    opacity: curved,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.04, 0),
+                        end: Offset.zero,
+                      ).animate(curved),
+                      child: child,
+                    ),
+                  );
+                },
+                child: _currentTab == SellClipTab.projects
+                    ? const ProjectsScreenBody(key: ValueKey('projects-tab'))
+                    : const _HomeTabBody(key: ValueKey('home-tab')),
+              ),
             ),
           ),
         ],
@@ -47,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _HomeTabBody extends StatelessWidget {
-  const _HomeTabBody();
+  const _HomeTabBody({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -300,7 +300,13 @@ class _ProjectTypeSection extends StatelessWidget {
         type: ProjectType.imageEditor,
         icon: Icons.auto_fix_high_rounded,
         title: 'Image Editor',
-        subtitle: 'Chỉnh sửa và nâng cấp hình ảnh',
+        subtitle: 'Ch?nh s?a v? n?ng c?p h?nh ?nh',
+      ),
+      _ProjectTypeOption(
+        type: ProjectType.aiContent,
+        icon: Icons.psychology_alt_outlined,
+        title: 'AI Content',
+        subtitle: 'AI tạo kịch bản, caption và ý tưởng bán hàng',
       ),
     ];
 

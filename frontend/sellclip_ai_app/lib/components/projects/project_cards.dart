@@ -52,7 +52,7 @@ class ProjectFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final folderLabel = selectedFolder ?? 'Tat ca folder';
+    final folderLabel = selectedFolder ?? 'Tất cả folder';
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -71,7 +71,7 @@ class ProjectFilters extends StatelessWidget {
               const Icon(Icons.tune_rounded, color: Colors.white, size: 21),
               const SizedBox(width: 10),
               const Text(
-                'Bo loc',
+                'Bộ lọc',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.white, fontSize: 14.5, fontWeight: FontWeight.w900),
@@ -79,7 +79,7 @@ class ProjectFilters extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Trang thai - Ngay - $folderLabel',
+                  'Trạng thái - Ngày - $folderLabel',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.right,
@@ -129,20 +129,20 @@ class ProjectFilters extends StatelessWidget {
                     ),
                   ),
                   const Text(
-                    'Bo loc project',
+                    'Bộ lọc project',
                     style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(height: 14),
                   const _FilterGroup(
                     icon: Icons.tune_rounded,
-                    title: 'Trang thai',
-                    options: ['Tat ca', 'Draft', 'Rendering', 'Done', 'Loi render', 'Archive'],
+                    title: 'Trạng thái',
+                    options: ['Tất cả', 'Draft', 'Rendering', 'Done', 'Lỗi render', 'Archive'],
                   ),
                   const SizedBox(height: 14),
                   const _FilterGroup(
                     icon: Icons.calendar_today_outlined,
-                    title: 'Ngay',
-                    options: ['Moi nhat', 'Hom nay', '7 ngay', '30 ngay'],
+                    title: 'Ngày',
+                    options: ['Mới nhất', 'Hôm nay', '7 ngày', '30 ngày'],
                   ),
                   const SizedBox(height: 14),
                   _FolderFilterGroup(
@@ -167,7 +167,7 @@ class ProjectFilters extends StatelessWidget {
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 13),
                           ),
-                          child: const Text('Xoa loc'),
+                          child: const Text('Xóa loc'),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -180,7 +180,7 @@ class ProjectFilters extends StatelessWidget {
                           child: TextButton(
                             onPressed: () => Navigator.pop(sheetContext),
                             style: TextButton.styleFrom(foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(vertical: 13)),
-                            child: const Text('Dong', style: TextStyle(fontWeight: FontWeight.w800)),
+                            child: const Text('Đóng', style: TextStyle(fontWeight: FontWeight.w800)),
                           ),
                         ),
                       ),
@@ -272,7 +272,7 @@ class _FolderFilterGroup extends StatelessWidget {
           runSpacing: 8,
           children: [
             _FolderFilterChip(
-              label: 'Tat ca folder',
+              label: 'Tất cả folder',
               count: null,
               selected: selectedFolder == null,
               onTap: () => onSelected(null),
@@ -422,14 +422,20 @@ class ProjectCard extends StatelessWidget {
         final titleSize = compact ? 14.5 : 16.0;
         final metaSize = compact ? 10.8 : 11.5;
 
-        return Container(
-          padding: EdgeInsets.all(compact ? 9 : 10),
-          decoration: BoxDecoration(
-            color: projectPanel.withValues(alpha: 0.76),
+        return Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(14),
+          child: InkWell(
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
-          ),
-          child: Row(
+            onTap: () => onOpen(item),
+            child: Container(
+              padding: EdgeInsets.all(compact ? 9 : 10),
+              decoration: BoxDecoration(
+                color: projectPanel.withValues(alpha: 0.76),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+              ),
+              child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _ProjectThumb(item: item, width: thumbWidth, height: thumbHeight, compact: compact),
@@ -492,6 +498,8 @@ class ProjectCard extends StatelessWidget {
                 ),
               ),
             ],
+              ),
+            ),
           ),
         );
       },
@@ -661,7 +669,7 @@ class _ProjectMoreMenu extends StatelessWidget {
                 const SizedBox(height: 10),
                 _ProjectActionTile(icon: Icons.open_in_new_rounded, label: 'M\u1edf', onTap: () => _run(sheetContext, onOpen)),
                 _ProjectActionTile(icon: Icons.edit_outlined, label: '\u0110\u1ed5i t\u00ean', onTap: () => _run(sheetContext, onRename)),
-                _ProjectActionTile(icon: Icons.copy_rounded, label: 'Duplicate', onTap: () => _run(sheetContext, onDuplicate)),
+                _ProjectActionTile(icon: Icons.copy_rounded, label: 'Nhân bản', onTap: () => _run(sheetContext, onDuplicate)),
                 _ProjectActionTile(icon: Icons.folder_outlined, label: '\u0110\u01b0a v\u00e0o folder', onTap: () => _run(sheetContext, onMoveToFolder)),
                 Divider(color: Colors.white.withValues(alpha: 0.12), height: 18),
                 _ProjectActionTile(icon: Icons.archive_outlined, label: 'Archive', onTap: () => _run(sheetContext, onArchive)),
@@ -809,7 +817,7 @@ class ProjectFolderBar extends StatelessWidget {
             SizedBox(width: 9),
             Expanded(
               child: Text(
-                'Chua co folder nao',
+                'Chưa có folder nào',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: projectMuted, fontSize: 13, fontWeight: FontWeight.w700),
@@ -829,7 +837,7 @@ class ProjectFolderBar extends StatelessWidget {
             const SizedBox(width: 7),
             const Expanded(
               child: Text(
-                'Folder da luu',
+                'Folder đã lưu',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800),
@@ -838,7 +846,7 @@ class ProjectFolderBar extends StatelessWidget {
             if (selectedFolder != null)
               TextButton(
                 onPressed: () => onSelected(null),
-                child: const Text('Tat ca'),
+                child: const Text('Tất cả'),
               ),
           ],
         ),
@@ -855,7 +863,7 @@ class ProjectFolderBar extends StatelessWidget {
                 final selected = selectedFolder == null;
                 final count = folders.fold<int>(0, (total, folder) => total + folder.projectCount);
                 return _FolderChipCard(
-                  name: 'Tat ca',
+                  name: 'Tất cả',
                   count: count,
                   selected: selected,
                   onTap: () => onSelected(null),

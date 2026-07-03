@@ -104,7 +104,7 @@ class ProjectApi {
       method: 'POST',
       body: {'ownerId': ownerId},
       successMessage: 'Da duplicate project',
-      fallbackMessage: 'Duplicate project that bai',
+      fallbackMessage: 'Nhân bản project thất bại',
     );
   }
 
@@ -185,7 +185,8 @@ enum ProjectType {
   imageToVideo('IMAGE_TO_VIDEO'),
   rawVideoEditor('RAW_VIDEO_EDITOR'),
   poster('POSTER'),
-  imageEditor('IMAGE_EDITOR');
+  imageEditor('IMAGE_EDITOR'),
+  aiContent('AI_CONTENT');
 
   const ProjectType(this.apiValue);
   final String apiValue;
